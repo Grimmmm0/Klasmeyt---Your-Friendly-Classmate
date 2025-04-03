@@ -5,7 +5,7 @@ class AppColors {
   static const sideNav = Color.fromRGBO(32, 34, 34, 1);
   static const searchBar = Color.fromRGBO(32, 34, 34, 1);
   static const searchBarBorder = Color.fromRGBO(60, 63, 64, 1);
-  static const iconGrey = Color(0xFF909090);
+  static const iconGrey = Color.fromRGBO(255, 112, 67, 1);
   static const textGrey = Color(0xFFAAAAAA);
   static const footerGrey = Color(0xFF737373);
   static const proButton = Color.fromRGBO(47, 48, 47, 1);

@@ -1,0 +1,2 @@
+D:/Projects/Flutter Projects/Klasmeyt---Your-Friendly-Classmate/android/app/.cxx/Debug/g5j11692/x86/CMakeFiles/edit_cache.dir
+D:/Projects/Flutter Projects/Klasmeyt---Your-Friendly-Classmate/android/app/.cxx/Debug/g5j11692/x86/CMakeFiles/rebuild_cache.dir

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:klasmeyt/widgets/side_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,9 +7,23 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("nigga")
-        ),
-    );
+        body: Row(
+      children: [
+        // Start of the left sidebar
+        LeftSideBar(),
+        // end of the left sidebar
+        Column(
+          children: [
+            // Start Search Section
+
+            // end of the Search Section
+
+            // Start of the Footer Section
+
+            // end of the Footer Section
+          ],
+        )
+      ],
+    ));
   }
 }
