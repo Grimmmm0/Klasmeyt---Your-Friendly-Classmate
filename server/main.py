@@ -12,5 +12,5 @@ def chat_endpoint(body: ChatBody):
     search_service.web_search()
     # Sort the Sources = the most relevant to least query
     # Generate the response using the LLM
-        
+    # Return the response to the user
     return body.query
