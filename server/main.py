@@ -9,8 +9,10 @@ search_service = SearchService()
 @app.post("/chat")
 def chat_endpoint(body: ChatBody):
     # Search or Find Relevent Information from the reputable resources
-    search_service.web_search()
+     search_results = search_service.web_search(body.query)
+     print(search_results)
+     
     # Sort the Sources = the most relevant to least query
     # Generate the response using the LLM
-    # Return the response to the user
-    return body.query
+
+     return body.query
