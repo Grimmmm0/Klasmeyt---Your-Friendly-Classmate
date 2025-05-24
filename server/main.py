@@ -13,8 +13,7 @@ def chat_endpoint(body: ChatBody):
     # Search or Find Relevent Information from the reputable resources
      search_results = search_service.web_search(body.query)
     # Sort the Sources = the most relevant to least query
-     sorted_results= sort_source_service.sort_sources(body.query, search_results)
-    # Generate the response using the LLM
+     sorted_results = sort_source_service.sort_sources(body.query, search_results)
      print(sorted_results)
 
      return body.query
