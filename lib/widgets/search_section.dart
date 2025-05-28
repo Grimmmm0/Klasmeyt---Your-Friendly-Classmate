@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:klasmeyt/services/chat_web_service.dart';
 import 'package:klasmeyt/themes/colors.dart';
 import 'package:klasmeyt/widgets/search_section_button.dart';
 
-class SearchSection extends StatelessWidget {
+class SearchSection extends StatefulWidget {
   const SearchSection({super.key});
+
+  @override
+  State<SearchSection> createState() => _SearchSectionState();
+}
+
+class _SearchSectionState extends State<SearchSection> {
+  final queryController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    queryController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +45,11 @@ class SearchSection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: queryController,
+                  decoration: const InputDecoration(
                       hintText: 'Search',
                       hintStyle: TextStyle(
                         color: AppColors.textGrey,
@@ -54,16 +70,21 @@ class SearchSection extends StatelessWidget {
                     const SearchSectionButton(
                         icon: Icons.add_circle_outlined, text: 'Attach'),
                     const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.all(9),
-                      decoration: BoxDecoration(
-                        color: AppColors.iconGrey,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.background,
-                        size: 10,
+                    GestureDetector(
+                      onTap: () {
+                        ChatWebService().chat(queryController.text.trim());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(9),
+                        decoration: BoxDecoration(
+                          color: AppColors.iconGrey,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.background,
+                          size: 10,
+                        ),
                       ),
                     ),
                   ],

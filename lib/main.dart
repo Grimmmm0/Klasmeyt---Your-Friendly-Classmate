@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:klasmeyt/pages/chat_page.dart';
 import 'package:klasmeyt/pages/home_page.dart';
 import 'package:klasmeyt/themes/colors.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           ThemeData.dark().textTheme,
         ),
       ),
-      home: const HomePage(),
+      home: const ChatPage(),
     );
   }
 }
