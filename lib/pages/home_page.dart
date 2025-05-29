@@ -31,18 +31,6 @@ class _HomePageState extends State<HomePage> {
             children: [
               // Start Search Section
               const Expanded(child: SearchSection()),
-              StreamBuilder(
-                stream: ChatWebService().contentStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  fullResponse += snapshot.data?['data'] ?? '';
-                  return Text(fullResponse);
-                },
-              ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Wrap(
