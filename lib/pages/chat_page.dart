@@ -1,27 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:klasmeyt/widgets/answer_section.dart';
 import 'package:klasmeyt/widgets/side_bar.dart';
+import 'package:klasmeyt/widgets/sources_section.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatPage extends StatelessWidget {
   final String question;
   const ChatPage({super.key, required this.question});
 
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-//  StreamBuilder(
-//               stream: ChatWebService().contentStream,
-//               builder: (context, snapshot) {
-//                 if (snapshot.connectionState == ConnectionState.waiting) {
-//                   return const Center(
-//                     child: CircularProgressIndicator(),
-//                   );
-//                 }
-//                 fullResponse += snapshot.data?['data'] ?? '';
-//                 return Text(fullResponse);
-//               },
-//             )
-
-class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +21,14 @@ class _ChatPageState extends State<ChatPage> {
             child: Column(
               children: [
                 Text(
-                  widget.question,
+                  question,
                   style: const TextStyle(
                       fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 24),
+                SourcesSection(),
+                const SizedBox(height: 24),
+                AnswerSection(),
               ],
             ),
           )
