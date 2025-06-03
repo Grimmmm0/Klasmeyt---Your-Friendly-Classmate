@@ -1,5 +1,5 @@
 import asyncio
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from pydantic_models.chat_body import ChatBody
 from services.llm_service import LLMService
 from services.sort_source_service import SortSourceService
@@ -15,21 +15,27 @@ llm_service = LLMService()
 @app.websocket("/ws/chat")
 async def websocket_chat_endpoint(websocket: WebSocket):
     await websocket.accept()
-
     try:
-        await asyncio.sleep(0.1)
-        data = await websocket.receive_json()
-        query = data.get("query")
-        search_results = search_service.web_search(query)
-        sorted_results = sort_source_service.sort_sources(query, search_results)
-        await asyncio.sleep(0.1)
-        await websocket.send_json({"type": "search_result", "data": sorted_results})
-        for chunk in llm_service.generate_response(query, sorted_results):
-            await asyncio.sleep(0.1)
-            await websocket.send_json({"type": "content", "data": chunk})
+        while True:
+            data = await websocket.receive_json()
+            query = data.get("query")
 
-    except:
-        print("Unexpected error occurred")
+            # Step 1: Perform search
+            search_results = search_service.web_search(query)
+            sorted_results = sort_source_service.sort_sources(query, search_results)
+
+            # Step 2: Send search results
+            await websocket.send_json({"type": "search_result", "data": sorted_results})
+
+            # Step 3: Stream LLM response
+            for chunk in llm_service.generate_response(query, sorted_results):
+                await asyncio.sleep(0.1)  # Simulate delay if needed
+                await websocket.send_json({"type": "content", "data": chunk})
+
+    except WebSocketDisconnect:
+        print("Client disconnected")
+    except Exception as e:
+        print(f"Unexpected error occurred: {e}")
     finally:
         await websocket.close()
 
