@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:web_socket_client/web_socket_client.dart';
 
 class ChatWebService {
   static final _instance = ChatWebService._internal();
   WebSocket? _socket;
-  factory ChatWebService() => _instance;
-  ChatWebService._internal();
 
+  factory ChatWebService() => _instance;
+
+  ChatWebService._internal();
   final _searchResultController = StreamController<Map<String, dynamic>>();
   final _contentController = StreamController<Map<String, dynamic>>();
 
   Stream<Map<String, dynamic>> get searchResultStream =>
       _searchResultController.stream;
-
   Stream<Map<String, dynamic>> get contentStream => _contentController.stream;
 
   void connect() {
@@ -31,10 +30,8 @@ class ChatWebService {
   }
 
   void chat(String query) {
-    if (_socket == null) {
-      connect();
-    }
-    print("Sending query: $query");
+    print(query);
+    print(_socket);
     _socket!.send(json.encode({'query': query}));
   }
 }

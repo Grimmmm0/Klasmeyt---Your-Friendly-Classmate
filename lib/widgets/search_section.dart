@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:klasmeyt/pages/chat_page.dart';
 import 'package:klasmeyt/services/chat_web_service.dart';
 import 'package:klasmeyt/themes/colors.dart';
@@ -27,11 +28,10 @@ class _SearchSectionState extends State<SearchSection> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Ano yun Klasmeyt?',
-          style: TextStyle(
-            fontSize: 70,
+          'Ano un Klasmeyt?',
+          style: GoogleFonts.pixelifySans(
+            fontSize: 40,
             fontWeight: FontWeight.w400,
-            color: Theme.of(context).primaryColor,
             height: 1.2,
             letterSpacing: -0.5,
           ),
@@ -42,7 +42,10 @@ class _SearchSectionState extends State<SearchSection> {
           decoration: BoxDecoration(
             color: AppColors.searchBar,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.searchBarBorder, width: 1.5),
+            border: Border.all(
+              color: AppColors.searchBarBorder,
+              width: 1.5,
+            ),
           ),
           child: Column(
             children: [
@@ -51,30 +54,34 @@ class _SearchSectionState extends State<SearchSection> {
                 child: TextField(
                   controller: queryController,
                   decoration: const InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                        color: AppColors.textGrey,
-                        fontSize: 16,
-                      ),
-                      border: InputBorder.none,
-                      isDense: true,
-                      contentPadding: EdgeInsets.zero),
+                    hintText: 'Search anything...',
+                    hintStyle: TextStyle(
+                      color: AppColors.textGrey,
+                      fontSize: 16,
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: [
                     const SearchSectionButton(
-                        icon: Icons.auto_awesome_outlined, text: 'Focus'),
+                      icon: Icons.auto_awesome_outlined,
+                      text: 'Focus',
+                    ),
                     const SizedBox(width: 12),
                     const SearchSectionButton(
-                        icon: Icons.add_circle_outlined, text: 'Attach'),
+                      icon: Icons.add_circle_outline_outlined,
+                      text: 'Attach',
+                    ),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                        final chatService = ChatWebService();
-                        chatService.chat(queryController.text.trim());
+                        ChatWebService().chat(queryController.text.trim());
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
@@ -83,21 +90,21 @@ class _SearchSectionState extends State<SearchSection> {
                         );
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(9),
+                        padding: EdgeInsets.all(9),
                         decoration: BoxDecoration(
                           color: AppColors.iconGrey,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: const Icon(
-                          Icons.arrow_forward_ios,
+                          Icons.arrow_forward,
                           color: AppColors.background,
-                          size: 10,
+                          size: 16,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
-              ),
+              )
             ],
           ),
         )

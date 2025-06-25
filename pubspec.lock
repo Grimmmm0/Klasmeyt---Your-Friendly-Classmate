@@ -275,6 +275,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  skeletonizer:
+    dependency: "direct main"
+    description:
+      name: skeletonizer
+      sha256: "0dcacc51c144af4edaf37672072156f49e47036becbc394d7c51850c5c1e884b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.3"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -380,10 +388,10 @@ packages:
     dependency: "direct main"
     description:
       name: web_socket_client
-      sha256: "394789177aa3bc1b7b071622a1dbf52a4631d7ce23c555c39bb2523e92316b07"
+      sha256: "0ec5230852349191188c013112e4d2be03e3fc83dbe80139ead9bf3a136e53b5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.1"
+    version: "0.1.5"
   xdg_directories:
     dependency: transitive
     description:
