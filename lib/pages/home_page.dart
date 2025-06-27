@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         body: Row(
       children: [
         // Start of the left sidebar
-        kIsWeb ? const LeftSideBar() : const SizedBox(),
+        kIsWeb ? LeftSideBar() : SizedBox(),
         // end of the left sidebar
         Expanded(
           child: Padding(

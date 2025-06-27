@@ -81,11 +81,27 @@ class _SearchSectionState extends State<SearchSection> {
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
-                        ChatWebService().chat(queryController.text.trim());
+                        final query = queryController.text.trim();
+
+                        if (query.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "v0v0 wlang laman ung text field",
+                                style: TextStyle(
+                                  color: AppColors.whiteColor,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                          return;
+                        }
+                        ChatWebService().chat(query);
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ChatPage(question: queryController.text.trim()),
+                            builder: (context) => ChatPage(question: query),
                           ),
                         );
                       },

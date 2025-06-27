@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:klasmeyt/services/chat_web_service.dart';
@@ -13,7 +15,7 @@ class AnswerSection extends StatefulWidget {
 
 class _AnswerSectionState extends State<AnswerSection> {
   bool isLoading = true;
-
+  StreamSubscription? _subscription;
   // need for skeletonizer to work properly bulok flutter
   String fullResponse = '''
 As of the end of Day 1 in the fourth Test match between India and Australia, the score stands at **Australia 311/6**. The match is being held at the Melbourne Cricket Ground (MCG) on December 26, 2024.
@@ -40,15 +42,21 @@ As play concluded for the day, Australia stood at **311/6**, with Steve Smith ho
   @override
   void initState() {
     super.initState();
-    ChatWebService().contentStream.listen((data) {
-      if (isLoading) {
-        fullResponse = "";
-      }
+
+    // Cancel previous subscription if any
+    _subscription = ChatWebService().contentStream.listen((data) {
+      if (isLoading) fullResponse = '';
       setState(() {
         fullResponse += data['data'];
         isLoading = false;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel(); // clean up
+    super.dispose();
   }
 
   @override

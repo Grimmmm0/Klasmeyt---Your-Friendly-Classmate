@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:klasmeyt/services/chat_web_service.dart';
 import 'package:klasmeyt/themes/colors.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SourcesSection extends StatefulWidget {
   const SourcesSection({super.key});
@@ -12,6 +15,7 @@ class SourcesSection extends StatefulWidget {
 
 class _SourcesSectionState extends State<SourcesSection> {
   bool isLoading = true;
+  StreamSubscription? _subscription;
   List searchResults = [
     {
       'title': 'Ind vs Aus Live Score 4th Test',
@@ -33,12 +37,20 @@ class _SourcesSectionState extends State<SourcesSection> {
   @override
   void initState() {
     super.initState();
-    ChatWebService().searchResultStream.listen((data) {
+
+    _subscription = ChatWebService().searchResultStream.listen((data) {
       setState(() {
         searchResults = data['data'];
         isLoading = false;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _subscription
+        ?.cancel(); // critical for avoiding memory leaks and UI freezes
+    super.dispose();
   }
 
   @override
@@ -69,34 +81,49 @@ class _SourcesSectionState extends State<SourcesSection> {
             spacing: 16,
             runSpacing: 16,
             children: searchResults.map((res) {
-              return Container(
-                width: 150,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.cardColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      res['title'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
+              return GestureDetector(
+                onTap: () async {
+                  final Uri url = Uri.parse(res['url']);
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Could not open the link')),
+                    );
+                  }
+                },
+                child: Container(
+                  width: 150,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.cardColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        res['title'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue, // Indicate it's a link
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      res['url'],
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
+                      const SizedBox(height: 8),
+                      Text(
+                        res['url'],
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }).toList(),
