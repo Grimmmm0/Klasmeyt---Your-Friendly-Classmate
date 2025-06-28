@@ -9,12 +9,17 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+
     return AnimatedSplashScreen(
       splash: Center(
-        child: Lottie.asset('assets/animatedSplash.json',
-            width: 500, height: 500, fit: BoxFit.none),
+        child: Lottie.asset(
+          'assets/animatedSplash.json',
+          width: 500,
+          height: 500,
+          fit: BoxFit.none,
+        ),
       ),
-      duration: 3150,
+      duration: 2500,
       splashTransition: SplashTransition.fadeTransition,
       backgroundColor: backgroundColor,
       nextScreen: const HomePage(),
