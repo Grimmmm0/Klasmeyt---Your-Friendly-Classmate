@@ -1,5 +1,5 @@
 name: klasmeyt
-description: "A new Flutter project."
+description: "A Flutter package for Klasmeyt, your friendly classmate app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -42,6 +42,9 @@ dependencies:
   flutter_markdown: ^0.7.7+1
   skeletonizer: ^1.4.2
   url_launcher: ^6.2.5
+  lottie:
+  animated_splash_screen: ^1.0.0
+  flutter_native_splash: ^2.4.6
  
 
 dev_dependencies:
@@ -67,8 +70,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+  - assets/animatedSplash.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
