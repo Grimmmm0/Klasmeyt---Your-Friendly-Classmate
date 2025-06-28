@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-dotenv
 pydantic-settings
 google-generativeai
@@ -10,3 +10,4 @@ transformers
 scikit-learn
 numpy
 trafilatura
+httpx
