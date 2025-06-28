@@ -20,8 +20,7 @@ class ChatWebService {
 
   void connect() {
     _socket = WebSocket(
-      Uri.parse("wss://klasmeyt-your-friendly-tropa.onrender.com/ws/chat"),
-    );
+        Uri.parse("wss://klasmeyt-your-friendly-tropa.onrender.com/ws/chat"));
 
     _socket!.messages.listen((message) {
       final data = json.decode(message);

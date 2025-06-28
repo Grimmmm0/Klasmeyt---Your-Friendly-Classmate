@@ -33,8 +33,11 @@ async def websocket_chat_endpoint(websocket: WebSocket):
     except Exception as e:
         print(f"Unexpected error occurred: {e}")
     finally:
-        await websocket.close()
-        
+        try:
+            await websocket.close()
+        except RuntimeError:
+            pass  # The websocket is already closed
+
 @app.get("/")
 def read_root():
     return {"message": "Klasmeyt backend is live!"}
