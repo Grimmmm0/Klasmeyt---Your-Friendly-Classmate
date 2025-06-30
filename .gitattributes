@@ -1,0 +1,11 @@
+# Ignore native build tools and other irrelevant languages
+*.c linguist-vendored
+*.cpp linguist-vendored
+*.h linguist-vendored
+*.cc linguist-vendored
+*.cmake linguist-vendored
+*.m linguist-vendored
+*.mm linguist-vendored
+
+# Explicitly set Dart as the main language
+lib/** linguist-language=Dart
