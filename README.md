@@ -1,16 +1,37 @@
-# klasmeyt
+Klasmeyt - Your Friendly Tropa 🤙
 
-A new Flutter project.
+This APK connects to a FastAPI WebSocket + REST API server hosted on Render:
+🌐 https://klasmeyt-your-friendly-tropa.onrender.com
 
-## Getting Started
+⚠️ Important Warning:
+Render's free tier has a 512MB memory cap. If the backend becomes unresponsive (especially with large queries or heavy LLM loads), it may be due to memory overflow.
+The server may need to be restarted or upgraded to a paid plan.
 
-This project is a starting point for a Flutter application.
+————————————————————————————————————————————————————
 
-A few resources to get you started if this is your first Flutter project:
+📦 How to Run the Project Locally:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repo and navigate to it:
+   git clone <your-repo-url>
+   cd <your-project-directory>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Install dependencies:
+   pip install -r requirements.txt
+
+3. Create a .env file and include:
+   GEMINI_API_KEY=your_google_gemini_key
+   TAVILY_API_KEY=your_tavily_key
+
+4. Run the backend:
+   uvicorn main:app --host 0.0.0.0 --port 10000
+
+5. Update the WebSocket URL in the Flutter app:
+   - If running locally on Android Emulator: ws://10.0.2.2:10000/ws/chat
+   - If using deployed server: wss://klasmeyt-your-friendly-tropa.onrender.com/ws/chat
+
+————————————————————————————————————————————————————
+
+📌 APK Notes:
+- Ensure an internet connection.
+- Server should be live on Render to access AI and search features.
+- This APK is not in final build version.
