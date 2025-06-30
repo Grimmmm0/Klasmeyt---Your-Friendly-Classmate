@@ -1,16 +1,25 @@
-# klasmeyt
+✅ Current Status
+✅ Fully functional APK built and uploaded.
 
-A new Flutter project.
+✅ WebSocket-based chat system working.
 
-## Getting Started
+🚀 Live backend server deployed on Render:
 
-This project is a starting point for a Flutter application.
+https://klasmeyt-your-friendly-tropa.onrender.com
 
-A few resources to get you started if this is your first Flutter project:
+⚠️ Note: Render's free tier has a 512MB RAM limit, which may cause errors like:
+(Ran out of memory (used over 512MB) while running your code.)
+If this happens, you can:
+  *Re-deploy it to a local server (recommended for development)
+  *Upgrade to a paid Render plan
+  *Or deploy to another host like Railway, Vercel, etc.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+🧪 Running Locally
+If you want to run the app with a local backend, go to:
+  *lib/services/chat_webService.dart
+  *_socket = WebSocket(Uri.parse("ws://10.0.2.2:8000/ws/chat"));
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+📦 APK Download
+You can Download the latest APK from GitHub Releases
+
+(APK is not included in the repo to avoid large file issues. Upload it manually in the release section.)
