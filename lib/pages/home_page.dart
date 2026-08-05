@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:klasmeyt/classes/message.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,13 +9,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final List<Message> _messages = [
+    Message(text: "Yow", isUser: true),
+    Message(text: "Yow, Ano meron?", isUser: false),
+    Message(text: "Ayus lang, ikaw?", isUser: true),
+    Message(text: "Angas", isUser: false),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+        body: Center(
+      child: Text("tang ina mo"),
+    ));
   }
 }
