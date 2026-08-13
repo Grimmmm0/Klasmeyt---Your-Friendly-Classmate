@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:klasmeyt/pages/home_page.dart';
+import 'package:klasmeyt/pages/splash_screen.dart';
 import 'package:klasmeyt/themes/colors.dart';
 
 void main() {
@@ -27,6 +27,6 @@ class MyApp extends StatelessWidget {
                 ),
           ),
         ),
-        home: const HomePage());
+        home: const SplashScreen());
   }
 }
