@@ -11,7 +11,7 @@ class LLMService:
     def _load_model(self):
         if self.model is None:
             genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel("gemini-2.0-flash")
+            self.model = genai.GenerativeModel("gemini-3.5-flash")
 
     def generate_response(self, query: str, search_results: list[dict]):
         self._load_model()
