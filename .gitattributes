@@ -1,11 +1,15 @@
-# Ignore native build tools and other irrelevant languages
-*.c linguist-vendored
-*.cpp linguist-vendored
-*.h linguist-vendored
-*.cc linguist-vendored
-*.cmake linguist-vendored
-*.m linguist-vendored
-*.mm linguist-vendored
+# Exclude entire build and platform folders
+android/* linguist-vendored
+ios/* linguist-vendored
+linux/* linguist-vendored
+macos/* linguist-vendored
+web/* linguist-vendored
+windows/* linguist-vendored
 
-# Explicitly set Dart as the main language
-lib/** linguist-language=Dart
+
+CMakeLists.txt linguist-vendored
+*.cmake linguist-vendored
+*.html linguist-vendored
+*.swift linguist-vendored
+*.kt linguist-vendored
+*.kts linguist-vendored
