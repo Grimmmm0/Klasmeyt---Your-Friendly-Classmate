@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.pixelifySansTextTheme(
             ThemeData.dark().textTheme.copyWith(
                   bodyMedium: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 12,
                     color: AppColors.whiteColor,
                   ),
                 ),

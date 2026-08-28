@@ -45,10 +45,10 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             margin: const EdgeInsets.symmetric(
               horizontal: 40,
-            ).copyWith(top: 30),
+            ).copyWith(top: 20),
             decoration: BoxDecoration(
               border: Border.all(
                 color: AppColors.textGrey,
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 'Gandang Araw, Klasmeyt ano yun?',
                 style: TextStyle(color: AppColors.whiteColor, fontSize: 25),
@@ -81,14 +81,35 @@ class _HomePageState extends State<HomePage> {
           const Column(
             children: [
               FeatureBox(
-                color: AppColors.submitButton,
+                color: Colors.blueAccent,
                 headerText: 'ChatGPT',
                 descriptionText:
-                    'AI nang nakakarami ang ChatGPT kahit lola mo alam',
+                    'AI para sa lahat: Ang teknolohiyang kahit si lolo, kayang utusan.',
+              ),
+              FeatureBox(
+                color: Colors.greenAccent,
+                headerText: 'Dall-E',
+                descriptionText:
+                    'DALL-E ng nakakarami: Kahit lola mo, kayang maging instant pintor.',
+              ),
+              FeatureBox(
+                color: Colors.redAccent,
+                headerText: 'Smart Voice Assistant',
+                descriptionText:
+                    'Kausap ng bayan: Ang tsismisang may kabuluhan dahil alam lahat ng sagot.',
               )
             ],
           ),
         ],
+      ),
+      floatingActionButton: SizedBox(
+        width: 40.0,
+        height: 40.0,
+        child: FloatingActionButton(
+          backgroundColor: AppColors.iconGrey,
+          onPressed: () {},
+          child: const Icon(Icons.mic, size: 35.0),
+        ),
       ),
     );
   }
