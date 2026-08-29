@@ -25,9 +25,15 @@ class _HomePageState extends State<HomePage> {
 
   void _initSpeech() async {
     _speechEnabled = await _speechToText.initialize(
-      onError: (errorNotification) => print('STT Error: $errorNotification'),
-      onStatus: (status) => print('STT Status: $status'),
+      onError: (errorNotification) {
+        print(
+            '=== STT ERROR: ${errorNotification.errorMsg} - Permanent: ${errorNotification.permanent}');
+      },
+      onStatus: (status) {
+        print('=== STT STATUS: $status');
+      },
     );
+    print('=== STT INITIALIZED: $_speechEnabled');
     setState(() {});
   }
 
