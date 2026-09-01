@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:klasmeyt/feature_box.dart';
+import 'package:klasmeyt/openai_service.dart';
 import 'package:klasmeyt/themes/colors.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'dart:typed_data';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,50 +16,61 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Fixed: Removed duplicate @override decorator here
-  final SpeechToText _speechToText = SpeechToText();
-  bool _speechEnabled = false;
-  String _lastWords = '';
-
+  final speechToText = SpeechToText();
+  bool speechEnabled = false;
+  bool isGeneratingImage = false;
+  String lastWords = '';
+  Uint8List? generatedImage;
+  String? aiTextAnswer;
+  final OpenAIService openAIService = OpenAIService();
   @override
   void initState() {
     super.initState();
-    _initSpeech();
+    initSpeech();
   }
 
-  void _initSpeech() async {
-    _speechEnabled = await _speechToText.initialize(
+  void initSpeech() async {
+    speechEnabled = await speechToText.initialize(
       onError: (errorNotification) {
-        print(
-            '=== STT ERROR: ${errorNotification.errorMsg} - Permanent: ${errorNotification.permanent}');
+        print('=== STT ERROR: ${errorNotification.errorMsg}');
       },
       onStatus: (status) {
         print('=== STT STATUS: $status');
       },
     );
-    print('=== STT INITIALIZED: $_speechEnabled');
     setState(() {});
   }
 
-  void _startListening() async {
-    if (_speechEnabled) {
-      await _speechToText.listen(
-        onResult: _onSpeechResult,
-        localeId: 'en_US', // Change to 'tl_PH' if you want Tagalog recognition
+  Future<void> startListening() async {
+    if (speechEnabled) {
+      await speechToText.listen(
+        onResult: onSpeechResult,
+        listenOptions: SpeechListenOptions(
+          localeId: 'en_US', // Use 'tl_PH' for Tagalog recognition
+          listenMode: ListenMode.dictation,
+          partialResults: true,
+          cancelOnError: false,
+        ),
       );
       setState(() {});
     }
   }
 
-  void _stopListening() async {
-    await _speechToText.stop();
+  Future<void> stopListening() async {
+    await speechToText.stop();
     setState(() {});
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) {
+  void onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
-      _lastWords = result.recognizedWords;
+      lastWords = result.recognizedWords;
     });
+  }
+
+  @override
+  void dispose() {
+    speechToText.stop();
+    super.dispose();
   }
 
   @override
@@ -95,8 +110,19 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-
-            // Speech Bubble / Output Box
+            if (isGeneratingImage)
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: CircularProgressIndicator(),
+              ),
+            if (generatedImage != null)
+              Container(
+                margin: const EdgeInsets.all(20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.memory(generatedImage!),
+                ),
+              ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               margin:
@@ -110,9 +136,8 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(
-                  // Displays spoken words if available, otherwise shows greeting
-                  _lastWords.isNotEmpty
-                      ? _lastWords
+                  lastWords.isNotEmpty
+                      ? lastWords
                       : 'Gandang Araw, Klasmeyt ano yun?',
                   style: const TextStyle(
                     color: AppColors.whiteColor,
@@ -121,6 +146,22 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            if (aiTextAnswer != null)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 40)
+                    .copyWith(top: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.textGrey),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  aiTextAnswer!,
+                  style: const TextStyle(
+                      color: AppColors.whiteColor, fontSize: 18),
+                ),
+              ),
 
             // Section Title
             Container(
@@ -164,14 +205,48 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: SizedBox(
-        width: 56.0, // Increased to default FAB size so icon isn't clipped
+        width: 56.0,
         height: 56.0,
         child: FloatingActionButton(
           backgroundColor: AppColors.iconGrey,
-          onPressed:
-              _speechToText.isNotListening ? _startListening : _stopListening,
+          onPressed: () async {
+            if (await speechToText.hasPermission &&
+                speechToText.isNotListening) {
+              await startListening();
+            } else if (speechToText.isListening) {
+              await stopListening();
+
+              setState(() {
+                isGeneratingImage = true;
+                aiTextAnswer = null;
+                generatedImage = null;
+              });
+
+              final routed = await openAIService.routePrompt(lastWords);
+
+              if (routed.trim() == 'GENERATE_IMAGE') {
+                final result =
+                    await openAIService.huggingFaceImageAPI(lastWords);
+                setState(() {
+                  isGeneratingImage = false;
+                  try {
+                    generatedImage = base64Decode(result);
+                  } catch (_) {
+                    print('IMAGE ERROR: $result');
+                  }
+                });
+              } else {
+                setState(() {
+                  isGeneratingImage = false;
+                  aiTextAnswer = routed;
+                });
+              }
+            } else {
+              initSpeech();
+            }
+          },
           tooltip: 'Listen',
-          child: Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.mic),
+          child: Icon(speechToText.isNotListening ? Icons.mic_off : Icons.mic),
         ),
       ),
     );
