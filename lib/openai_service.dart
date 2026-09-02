@@ -7,14 +7,13 @@ class OpenAIService {
   Future<String> routePrompt(String prompt) async {
     try {
       final res = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        Uri.parse('https://router.huggingface.co/nscale/v1/chat/completions'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $openAIAPIKEY',
+          'Authorization': 'Bearer $huggingFaceAPIKEY',
         },
         body: jsonEncode({
-          "model": "gpt-3.5-turbo",
-          "temperature": 0,
+          "model": "meta-llama/Llama-3.1-8B-Instruct",
           "messages": [
             {
               "role": "system",

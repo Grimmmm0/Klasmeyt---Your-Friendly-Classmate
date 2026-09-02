@@ -79,7 +79,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Klasmeyt'),
         centerTitle: true,
-        leading: const Icon(Icons.menu_outlined),
         backgroundColor: AppColors.iconGrey,
       ),
       body: SingleChildScrollView(
@@ -163,43 +162,48 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-            // Section Title
-            Container(
-              padding: const EdgeInsets.all(10),
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(top: 10, left: 22),
-              child: const Text(
-                'Ito ang aking mga tampok',
-                style: TextStyle(
-                  color: AppColors.whiteColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            Visibility(
+              visible: aiTextAnswer == null && generatedImage == null,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.only(top: 10, left: 22),
+                child: const Text(
+                  'Ito ang aking mga tampok',
+                  style: TextStyle(
+                    color: AppColors.whiteColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
 
             // Feature Boxes
-            const Column(
-              children: [
-                FeatureBox(
-                  color: Colors.blueAccent,
-                  headerText: 'ChatGPT',
-                  descriptionText:
-                      'AI para sa lahat: Ang teknolohiyang kahit si lolo, kayang utusan.',
-                ),
-                FeatureBox(
-                  color: Colors.greenAccent,
-                  headerText: 'Dall-E',
-                  descriptionText:
-                      'DALL-E ng nakakarami: Kahit lola mo, kayang maging instant pintor.',
-                ),
-                FeatureBox(
-                  color: Colors.redAccent,
-                  headerText: 'Smart Voice Assistant',
-                  descriptionText:
-                      'Kausap ng bayan: Ang tsismisang may kabuluhan dahil alam lahat ng sagot.',
-                )
-              ],
+            Visibility(
+              visible: aiTextAnswer == null && generatedImage == null,
+              child: const Column(
+                children: [
+                  FeatureBox(
+                    color: Colors.blueAccent,
+                    headerText: 'ChatGPT',
+                    descriptionText:
+                        'AI para sa lahat: Ang teknolohiyang kahit si lolo, kayang utusan.',
+                  ),
+                  FeatureBox(
+                    color: Colors.greenAccent,
+                    headerText: 'HUGGING FACE',
+                    descriptionText:
+                        'text to image :imahinasyon mo gawin nating realidad',
+                  ),
+                  FeatureBox(
+                    color: Colors.redAccent,
+                    headerText: 'Smart Voice Assistant',
+                    descriptionText:
+                        'Kausap ng bayan: Ang tsismisang may kabuluhan dahil alam lahat ng sagot.',
+                  )
+                ],
+              ),
             ),
           ],
         ),

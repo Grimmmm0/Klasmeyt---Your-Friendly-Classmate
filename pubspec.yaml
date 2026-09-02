@@ -43,9 +43,11 @@ dependencies:
   skeletonizer: ^2.1.0
   url_launcher: ^6.3.2
   lottie: ^3.3.2
-  flutter_native_splash: ^2.4.7
+  flutter_native_splash: ^2.4.8
   speech_to_text: ^7.4.0
   http: ^1.6.0
+
+
 
 
 dev_dependencies:
@@ -58,6 +60,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,9 +77,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/animatedSplash.json
-  - assets/logo.png
   - assets/student.png
   - assets/sounds/
+  - assets/logus.png
+  
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -104,3 +110,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_native_splash:
+  color: "#FF7043"
+  image: assets/logus.png
+
+  android_12:
+    color: "#FF7043"
+    image: assets/logus.png
