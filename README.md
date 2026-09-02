@@ -13,26 +13,26 @@ There are two versions of this project, built with very different architectures:
 
 | | v1 | v2 (current) |
 |---|---|---|
-| **LLM** | Gemini | OpenAI (`gpt-3.5-turbo`) |
+| **LLM** | Gemini | Hugging Face (`meta-llama/Llama-3.1-8B-Instruct` via `nscale`) |
 | **Backend** | Python FastAPI server | None — direct API calls from the Flutter app |
 | **Text-to-image** | ❌ Not supported | ✅ Supported (Hugging Face → FLUX.1-schnell via `nscale`) |
-| **Request flow** | Flutter app → FastAPI server → Gemini → response | Flutter app → OpenAI / Hugging Face directly |
+| **Request flow** | Flutter app → FastAPI server → Gemini → response | Flutter app → Hugging Face directly |
 | **Response type** | Plain prompt-and-answer only | Routes automatically between a text answer or an image, based on user intent |
-| **Setup complexity** | Requires running/hosting a separate server | Just API keys — no server to deploy or maintain |
+| **Setup complexity** | Requires running/hosting a separate server + `.env` config | Just one API key — no server to deploy or maintain |
 
 ---
 
 ## v2 — How It Works
 
 1. **Speech-to-text** — the user's voice is transcribed on-device using `speech_to_text`.
-2. **Intent routing** — the transcribed prompt is sent to OpenAI with a system instruction that classifies the request:
+2. **Intent routing** — the transcribed prompt is sent to Hugging Face's router (`nscale` provider, `meta-llama/Llama-3.1-8B-Instruct` model) with a system instruction that classifies the request:
    - If it's an image request → returns a `GENERATE_IMAGE` sentinel
    - Otherwise → returns a direct, conversational **Tagalog** answer
 3. **Branching**:
-   - **Text request** → the OpenAI response is shown directly in the app.
-   - **Image request** → the original prompt is sent to Hugging Face's router (`nscale` provider, `black-forest-labs/FLUX.1-schnell` model) to generate the image, which is decoded and displayed inline.
+   - **Text request** → the model's response is shown directly in the app.
+   - **Image request** → the original prompt is sent to Hugging Face's router again, this time to the `nscale` provider's `black-forest-labs/FLUX.1-schnell` model, to generate the image, which is decoded and displayed inline.
 
-No backend server is required — every call goes straight from the Flutter app to the respective API.
+No backend server is required, and no OpenAI key is needed — every call goes straight from the Flutter app to Hugging Face.
 
 ---
 
@@ -40,8 +40,9 @@ No backend server is required — every call goes straight from the Flutter app 
 
 - **Flutter** — app framework
 - **speech_to_text** — on-device speech recognition
-- **OpenAI API** (`gpt-3.5-turbo`) — intent classification + Tagalog text answers
-- **Hugging Face Inference Providers** (`nscale` → FLUX.1-schnell) — text-to-image generation
+- **Hugging Face Inference Providers** (`nscale`):
+  - `meta-llama/Llama-3.1-8B-Instruct` — intent classification + Tagalog text answers
+  - `black-forest-labs/FLUX.1-schnell` — text-to-image generation
 
 ---
 
@@ -59,13 +60,13 @@ flutter pub get
 This project keeps API keys out of version control. Create `lib/secrets.dart` (already listed in `.gitignore`, so it will never be committed):
 
 ```dart
-const String openAIAPIKEY = 'your_openai_key_here';
 const String huggingFaceAPIKEY = 'your_huggingface_key_here';
 ```
 
 You'll need:
-- An **OpenAI API key** — [platform.openai.com](https://platform.openai.com)
 - A **Hugging Face access token** — [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+
+That's the only key v2 needs — no OpenAI account required.
 
 > ⚠️ Never commit `secrets.dart`. If a key is ever accidentally pushed, rotate it immediately at the provider's dashboard, even on a private repo.
 
@@ -87,10 +88,20 @@ The app requires microphone access for speech recognition. On Android 12+, also 
 
 ---
 
+## A Note on v1
+
+v1's FastAPI server code is maintained separately and is not part of this repo. If you're setting up or running v1, remember it needs its **own `.env` file** for the Gemini API key (and any other server-side config) — this is completely separate from v2's `lib/secrets.dart`.
+
+```
+# .env (v1 backend, not this repo)
+GEMINI_API_KEY=your_gemini_key_here
+```
+
+Make sure that `.env` is gitignored on the v1 side too, and that the key is rotated if it's ever accidentally committed — same rule as `secrets.dart` here.
+
 ## Roadmap / Notes
 
-- Hugging Face's Inference Providers occasionally change which provider serves a given model. If image generation starts failing with a `Model not supported by provider` error, check the model's page on Hugging Face for its currently active provider(s) and update the provider name in `openai_service.dart` accordingly.
-- v1's FastAPI server code is maintained separately and is not part of this repo.
+- Hugging Face's Inference Providers occasionally change which provider serves a given model. If image generation or text routing starts failing with a `Model not supported by provider` error, check the model's page on Hugging Face for its currently active provider(s) and update the provider/model name in `openai_service.dart` accordingly.
 
 ---
 
